@@ -88,7 +88,7 @@ def get_alert_rules(crop: str, forecast_date: date) -> list[dict]:
                     d["precipitation"] is not None and d["precipitation"] > 2
                 ),
                 "severity": "alta",
-                "message": lambda d: f"HR {d['humidity_max']:.0f}% + {d['precipitation']:.1f}mm — Condiciones de riesgo para Botrytis cinerea. Umbral alerta HR >85%; esporulación óptima >90% (T óptima 17-23°C). Resistencia a iprodiona documentada en zonas vitivinícolas de clima mediterráneo — rota grupos FRAC: iprodiona (FRAC 2, máx. 2 aplic./temporada) → fenhexamida/Teldor (FRAC 17) → ciprodinil+fludioxonil/Switch (FRAC 9+12). Todos registrados SAG Chile.",
+                "message": lambda d: f"HR {d['humidity_max']:.0f}% + {d['precipitation']:.1f}mm — Humedad y lluvia sobre umbral de infección (esporulación activa >90% HR, T óptima 17-23°C). Resistencia a iprodiona documentada en zonas vitivinícolas de clima mediterráneo: rota fungicidas — iprodiona (máx. 2/temporada) → fenhexamida → ciprodinil+fludioxonil.",
             },
             {
                 "id": "mildiu",
@@ -99,7 +99,7 @@ def get_alert_rules(crop: str, forecast_date: date) -> list[dict]:
                     d["precipitation"] is not None and d["precipitation"] > 6
                 ),
                 "severity": "alta",
-                "message": lambda d: f"HR {d['humidity_max']:.0f}%, {d['temp_max']:.1f}°C + {d['precipitation']:.1f}mm — Condiciones de infección de Mildiu. La 'Regla de los 3 diez' requiere T>10°C + lluvia≥10mm + brotes≥10cm; umbral de alerta desde 6mm (INIA Chile / Auger & Esterio 1997). Esporulación secundaria activa con HR>80%. Aplica cobre preventivo o mancozeb.",
+                "message": lambda d: f"HR {d['humidity_max']:.0f}%, {d['temp_max']:.1f}°C + {d['precipitation']:.1f}mm — Temperatura y lluvia activan germinación de esporangios (regla de los 3 diez: T>10°C + lluvia≥10mm + brotes≥10cm); esporulación secundaria activa con HR>80%. Aplica cobre preventivo o mancozeb en los próximos 2-3 días.",
             },
             {
                 "id": "oidio",
@@ -110,7 +110,7 @@ def get_alert_rules(crop: str, forecast_date: date) -> list[dict]:
                     (d["precipitation"] is None or d["precipitation"] < 1)
                 ),
                 "severity": "media",
-                "message": lambda d: f"HR media {d['humidity_mean']:.0f}%, {d['temp_max']:.1f}°C sin lluvia — El oídio se favorece con tiempo seco y cálido, diferente a otros hongos. Aplica azufre preventivo o IBE (miclobutanil, tebuconazol).",
+                "message": lambda d: f"HR media {d['humidity_mean']:.0f}%, {d['temp_max']:.1f}°C sin lluvia — Tiempo seco y cálido activa la esporulación (contrario a hongos húmedos). Aplica azufre preventivo o inhibidor de esteroles (miclobutanil, tebuconazol).",
             },
             {
                 "id": "viento_fuerte",
@@ -186,7 +186,7 @@ def get_alert_rules(crop: str, forecast_date: date) -> list[dict]:
                     d["temp_max"] is not None and 14 <= d["temp_max"] <= 25
                 ),
                 "severity": "alta",
-                "message": lambda d: f"HR {d['humidity_max']:.0f}%, {d['temp_max']:.1f}°C — Condiciones favorables para Monilinia fructicola (T óptima 20-25°C, rango 14-25°C; 5 h de humedad = inoculación; SAG Chile + SmartCherry). Alta presión en zonas vitivinícolas templadas. En cosecha de exportación prefiere ciprodinil+fludioxonil/Switch (FRAC 9+12, referencia ASOEX); iprodiona (FRAC 2) máx. 2 aplic./temporada. Ambos registrados SAG Chile.",
+                "message": lambda d: f"HR {d['humidity_max']:.0f}%, {d['temp_max']:.1f}°C — Temperatura óptima de infección (20-25°C, rango 14-25°C); con 5 h continuas de humedad el inóculo penetra la fruta. Alta presión en zonas vitivinícolas templadas. En fruta de exportación prefiere ciprodinil+fludioxonil (Switch); iprodiona máx. 2 aplic./temporada.",
             },
             {
                 "id": "viruela_cerezo",
@@ -197,7 +197,7 @@ def get_alert_rules(crop: str, forecast_date: date) -> list[dict]:
                     d["temp_max"] is not None and 10 < d["temp_max"] < 22
                 ),
                 "severity": "media",
-                "message": lambda d: f"HR {d['humidity_max']:.0f}% + {d['precipitation']:.1f}mm + {d['temp_max']:.1f}°C — Condiciones para Viruela del cerezo (manchas foliares rojizas). Produce defoliación prematura. Aplica fungicida cúprico.",
+                "message": lambda d: f"HR {d['humidity_max']:.0f}% + {d['precipitation']:.1f}mm + {d['temp_max']:.1f}°C — Lluvia y humedad liberan ascosporas; manchas rojizas en hojas provocan defoliación prematura que debilita el árbol para la próxima temporada. Aplica fungicida cúprico post-lluvia.",
             },
             {
                 "id": "calor_extremo_cerezos",
@@ -241,7 +241,7 @@ def get_alert_rules(crop: str, forecast_date: date) -> list[dict]:
                     d["temp_max"] is not None and 18 < d["temp_max"] < 27
                 ),
                 "severity": "media",
-                "message": lambda d: f"HR {d['humidity_max']:.0f}%, {d['temp_max']:.1f}°C — Condiciones favorables para Tizón del norte, enfermedad foliar prevalente en el centro de Chile. Monitorea hojas basales.",
+                "message": lambda d: f"HR {d['humidity_max']:.0f}%, {d['temp_max']:.1f}°C — Humedad y temperatura activan germinación de conidios; lesiones alargadas grisáceas avanzan desde hojas basales hacia arriba. Monitorea; aplica triazol si aparecen síntomas.",
             },
             {
                 "id": "roya_maiz",
@@ -252,7 +252,7 @@ def get_alert_rules(crop: str, forecast_date: date) -> list[dict]:
                     d["precipitation"] is not None and d["precipitation"] > 2
                 ),
                 "severity": "media",
-                "message": lambda d: f"HR {d['humidity_max']:.0f}%, {d['temp_max']:.1f}°C — Condiciones para Roya común. Inspecciona ambas caras del limbo foliar. Aplica triazol si superas 5% de área afectada.",
+                "message": lambda d: f"HR {d['humidity_max']:.0f}%, {d['temp_max']:.1f}°C — Pústulas uredospóricas se forman en ambas caras del limbo foliar; avance rápido puede reducir el rendimiento. Inspecciona; aplica triazol si superas 5% de área foliar afectada.",
             },
             {
                 "id": "pudricion_mazorca",
@@ -304,7 +304,7 @@ def get_alert_rules(crop: str, forecast_date: date) -> list[dict]:
                     d["temp_max"] is not None and 10 <= d["temp_max"] <= 20
                 ),
                 "severity": "alta",
-                "message": lambda d: f"HR {d['humidity_max']:.0f}%, {d['temp_max']:.1f}°C — Condiciones ideales para Roya amarilla (T óptima 10-15°C, se detiene sobre 22°C; HR >92% para infección). La enfermedad más destructiva del trigo en Chile, especialmente en O'Higgins y el Maule. Inspecciona urgente y aplica triazol (tebuconazol, propiconazol).",
+                "message": lambda d: f"HR {d['humidity_max']:.0f}%, {d['temp_max']:.1f}°C — Ventana de infección óptima (T 10-15°C, cesa >22°C; HR >92%). Muy agresiva en O'Higgins y el Maule: puede colapsar el cultivo en 2-3 semanas sin control. Inspecciona urgente y aplica triazol (tebuconazol, propiconazol).",
             },
             {
                 "id": "roya_hoja",
@@ -314,7 +314,7 @@ def get_alert_rules(crop: str, forecast_date: date) -> list[dict]:
                     d["temp_max"] is not None and 15 <= d["temp_max"] <= 30
                 ),
                 "severity": "alta",
-                "message": lambda d: f"HR {d['humidity_max']:.0f}%, {d['temp_max']:.1f}°C — Condiciones para Roya de la hoja (T óptima 16-22°C, activa hasta 30°C; rocío nocturno ≥6-8 h = infección; USDA-ARS + SINAVIMO). Prefiere temperaturas más altas que la roya amarilla. Aplica estrobilurina o triazol preventivo.",
+                "message": lambda d: f"HR {d['humidity_max']:.0f}%, {d['temp_max']:.1f}°C — Temperatura óptima de infección (16-22°C, activa hasta 30°C); rocío nocturno de 6-8 h es suficiente para completar la penetración. Aplica estrobilurina o triazol preventivo.",
             },
             {
                 "id": "golpe_blanco",
@@ -325,7 +325,7 @@ def get_alert_rules(crop: str, forecast_date: date) -> list[dict]:
                     d["temp_max"] is not None and d["temp_max"] > 20
                 ),
                 "severity": "alta",
-                "message": lambda d: f"{d['precipitation']:.1f}mm + HR {d['humidity_max']:.0f}%, {d['temp_max']:.1f}°C — Riesgo de Golpe blanco durante antesis (T>20°C + HR>80% + mojado>48 h = infección epidémica; T óptima 24-28°C; INIA Uruguay / El Mercurio Campo / INIA Chile). Produce micotoxinas DON. Aplica tebuconazol o metconazol.",
+                "message": lambda d: f"{d['precipitation']:.1f}mm + HR {d['humidity_max']:.0f}%, {d['temp_max']:.1f}°C — Condiciones de infección epidémica durante antesis (T óptima 24-28°C; mojado >48 h = penetración masiva en espiga). Produce micotoxinas DON que bloquean la comercialización. Aplica tebuconazol o metconazol en plena floración.",
             },
             {
                 "id": "mancha_amarilla",
@@ -336,7 +336,7 @@ def get_alert_rules(crop: str, forecast_date: date) -> list[dict]:
                     d["temp_max"] is not None and d["temp_max"] > 12
                 ),
                 "severity": "media",
-                "message": lambda d: f"Lluvia {d['precipitation']:.1f}mm + HR {d['humidity_max']:.0f}% — Condiciones para Mancha amarilla, frecuente en suelos con rastrojos de trigo. Aplica fungicida si se detectan síntomas.",
+                "message": lambda d: f"Lluvia {d['precipitation']:.1f}mm + HR {d['humidity_max']:.0f}% — Lluvia y humedad liberan ascosporas desde rastrojos de trigo; lesiones necróticas ovales en hojas reducen área fotosintética. Aplica fungicida si aparecen síntomas.",
             },
             {
                 "id": "oidio_trigo",
@@ -347,7 +347,7 @@ def get_alert_rules(crop: str, forecast_date: date) -> list[dict]:
                     (d["precipitation"] is None or d["precipitation"] < 2)
                 ),
                 "severity": "media",
-                "message": lambda d: f"HR {d['humidity_mean']:.0f}%, {d['temp_max']:.1f}°C sin lluvia — Condiciones para Oídio del trigo. Se desarrolla rápido con tiempo fresco y sin lluvia. Aplica azufre o IBE.",
+                "message": lambda d: f"HR {d['humidity_mean']:.0f}%, {d['temp_max']:.1f}°C sin lluvia — Tiempo fresco y seco activa la esporulación: eflorescencia blanquecina avanza rápido en hojas y tallos. Aplica azufre o inhibidor de esteroles (miclobutanil, tebuconazol).",
             },
             *([{
                 "id": "lluvia_cosecha_trigo",
@@ -396,7 +396,7 @@ def get_alert_rules(crop: str, forecast_date: date) -> list[dict]:
                     d["precipitation"] is not None and d["precipitation"] > 3
                 ),
                 "severity": "alta",
-                "message": lambda d: f"HR {d['humidity_max']:.0f}%, {d['temp_max']:.1f}°C + {d['precipitation']:.1f}mm — Condiciones para Antracnosis (T óptima 13-26°C, HR 92-100%). Principal enfermedad del poroto en Chile. Manchas en vainas y hojas. Aplica preventivo: cobre/mancozeb (contacto) o azoxistrobina/Priori Xtra (sistémico, carencia 21 d). Todos registrados SAG Chile.",
+                "message": lambda d: f"HR {d['humidity_max']:.0f}%, {d['temp_max']:.1f}°C + {d['precipitation']:.1f}mm — Temperatura óptima de infección (13-26°C, HR 92-100%); manchas necróticas en vainas reducen directamente el rendimiento. Aplica preventivo: cobre/mancozeb (contacto) o azoxistrobina (sistémico, carencia 21 d).",
             },
             {
                 "id": "roya_porotos",
@@ -406,7 +406,7 @@ def get_alert_rules(crop: str, forecast_date: date) -> list[dict]:
                     d["temp_max"] is not None and 17 < d["temp_max"] < 27
                 ),
                 "severity": "alta",
-                "message": lambda d: f"HR {d['humidity_max']:.0f}%, {d['temp_max']:.1f}°C — Condiciones favorables para Roya del poroto. Muy destructiva si no se controla. Aplica triazol o estrobilurina preventivo.",
+                "message": lambda d: f"HR {d['humidity_max']:.0f}%, {d['temp_max']:.1f}°C — Pústulas canela en envés de hojas; avanza rápido y puede defoliar el cultivo si no se controla a tiempo. Aplica triazol o estrobilurina preventivo.",
             },
             {
                 "id": "moho_blanco",
@@ -417,7 +417,7 @@ def get_alert_rules(crop: str, forecast_date: date) -> list[dict]:
                     d["soil_moisture"] is not None and d["soil_moisture"] > 0.25
                 ),
                 "severity": "alta",
-                "message": lambda d: f"HR {d['humidity_max']:.0f}%, {d['temp_max']:.1f}°C, suelo saturado — Condiciones críticas para Sclerotinia (moho blanco). Una vez establecido es muy difícil de controlar. Mejora drenaje y ventilación.",
+                "message": lambda d: f"HR {d['humidity_max']:.0f}%, {d['temp_max']:.1f}°C, suelo saturado ({d['soil_moisture']:.2f} m³/m³) — Suelo húmedo y frescura activan esclerocios en suelo; la pudrición basal avanza rápido y es irreversible. Mejora drenaje y ventilación del canopeo.",
             },
             {
                 "id": "anegamiento_porotos",
