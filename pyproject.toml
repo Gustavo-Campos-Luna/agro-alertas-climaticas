@@ -41,7 +41,7 @@ ignore = ["E501"]
 "src/agro_alertas/main.py" = ["E402"]
 
 [tool.mypy]
-python_version = "3.10"
+python_version = "3.12"
 ignore_missing_imports = true
 check_untyped_defs = true
 
