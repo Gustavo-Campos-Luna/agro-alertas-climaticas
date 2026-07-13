@@ -6,14 +6,17 @@ Layout: 4 paneles (temperatura ancho completo + 3 paneles inferiores).
 Retorna imagen PNG embebida como string base64.
 """
 
-import io
 import base64
+import io
+
 import matplotlib
+
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
-from matplotlib import rcParams
+import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib import rcParams
+
 from agro_alertas.rules import format_date_es
 
 # ─── Paleta editorial (espeja tokens del email) ─────────────────────────────
@@ -113,7 +116,7 @@ def _plot_temperature(ax, x, labels, f):
         color=P["frost_line"],
     )
 
-    for i, (mx, mn) in enumerate(zip(tmax, tmin)):
+    for i, (mx, mn) in enumerate(zip(tmax, tmin, strict=True)):
         if not np.isnan(mx):
             ax.annotate(f"{mx:.0f}°", (x[i], mx), xytext=(0, 6),
                         textcoords="offset points", ha="center",
@@ -161,7 +164,7 @@ def _plot_precipitation(ax, x, labels, f):
     bar_colors = [P["sage"] if r > 0 else P["rule"] for r in rain]
     bars = ax.bar(x, rain, color=bar_colors, width=0.55, zorder=3, alpha=0.9)
 
-    for bar, val in zip(bars, rain):
+    for bar, val in zip(bars, rain, strict=True):
         if val <= 0:
             continue
         label = f"{val:.1f}" if val < 10 else f"{val:.0f}"
@@ -298,7 +301,7 @@ def _plot_wind(ax, x, labels, f):
             fontweight="bold",
         )
 
-    for i, (ws, wg) in enumerate(zip(wspeed, wgusts)):
+    for i, (ws, wg) in enumerate(zip(wspeed, wgusts, strict=True)):
         if ws > 0 and (max_wind >= 20 or ws >= 8):
             ax.text(x[i]-w/2, ws+0.5, f"{ws:.0f}", ha="center",
                     fontsize=9, color=P["wind"], fontweight="bold")
@@ -365,7 +368,7 @@ def generate_charts(forecast: dict) -> str:
 
     fig.text(
         0.5, 0.97,
-        f"Pronóstico Agroclimático — Santiago",
+        "Pronóstico Agroclimático — Santiago",
         ha="center", fontsize=11.5, fontweight="bold",
         color=P["ink"], fontfamily="serif",
     )

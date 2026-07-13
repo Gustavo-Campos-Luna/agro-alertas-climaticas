@@ -1,7 +1,8 @@
-from datetime import date, datetime
 from dataclasses import dataclass
-from agro_alertas.crops_db import get_alert_rules, CROP_INFO
+from datetime import datetime
+
 from agro_alertas.config import MONITORED_CROPS
+from agro_alertas.crops_db import CROP_INFO, get_alert_rules
 
 SEVERITY_ORDER = {"crítica": 0, "alta": 1, "media": 2, "baja": 3}
 
@@ -65,7 +66,7 @@ def evaluate(forecast: dict) -> list[Alert]:
 
 
 def alerts_by_crop(alerts: list[Alert]) -> dict[str, list[Alert]]:
-    result = {crop: [] for crop in MONITORED_CROPS}
+    result: dict[str, list[Alert]] = {crop: [] for crop in MONITORED_CROPS}
     for alert in alerts:
         result[alert.crop].append(alert)
     return result

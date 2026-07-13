@@ -1,8 +1,10 @@
 import os
+
 from groq import Groq
-from agro_alertas.rules import Alert, format_date_es
+
 from agro_alertas.config import LOCATION, MONITORED_CROPS
 from agro_alertas.crops_db import CROP_INFO
+from agro_alertas.rules import Alert, format_date_es
 
 
 def build_weather_summary(forecast: dict) -> str:
@@ -77,7 +79,7 @@ INSTRUCCIONES:
             temperature=0.4,
             max_tokens=600,
         )
-        return response.choices[0].message.content.strip()
+        return (response.choices[0].message.content or "").strip()
     except Exception:
         try:
             response = client.chat.completions.create(
@@ -86,8 +88,8 @@ INSTRUCCIONES:
                 temperature=0.4,
                 max_tokens=600,
             )
-            return response.choices[0].message.content.strip()
-        except Exception as e:
+            return (response.choices[0].message.content or "").strip()
+        except Exception:
             return _fallback_analysis(alerts)
 
 
