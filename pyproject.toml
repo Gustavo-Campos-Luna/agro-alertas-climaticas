@@ -5,7 +5,9 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "agro-alertas-climaticas"
 version = "0.1.0"
-description = "Sistema de alertas agroclimaticas para Chimbarongo, Colchagua."
+description = "Sistema de alertas agroclimaticas para predios agricolas en Chile, con envio automatico de reportes por email."
+readme = "README.md"
+license = { text = "MIT" }
 requires-python = ">=3.10"
 dependencies = [
   "requests>=2.31.0",
@@ -15,6 +17,35 @@ dependencies = [
   "numpy>=1.26.0",
 ]
 
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+  "ruff>=0.6.0",
+  "mypy>=1.11.0",
+  "types-requests",
+]
+
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+# main.py must load .env before importing modules that read env vars at import time.
+"src/agro_alertas/main.py" = ["E402"]
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+check_untyped_defs = true
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
 

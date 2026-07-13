@@ -17,8 +17,18 @@ Umbrales verificados contra fuentes chilenas y latam oficiales (revisión 2025):
 """
 
 from datetime import date
+from typing import TypedDict
 
-CROP_INFO = {
+
+class CropInfo(TypedDict):
+    label: str
+    emoji: str
+    description: str
+    harvest_months: list[int]
+    flowering_months: list[int]
+
+
+CROP_INFO: dict[str, CropInfo] = {
     "viña": {
         "label": "Viña / Vid",
         "emoji": "🍇",
