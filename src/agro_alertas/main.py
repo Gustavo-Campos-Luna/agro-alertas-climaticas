@@ -3,7 +3,7 @@ main.py — Orquestador principal del Sistema Agro Alertas Climáticas.
 
 Flujo de ejecución:
   1. Carga variables de entorno (.env)
-  2. Obtiene pronóstico de Open-Meteo para Chimbarongo (7 días)
+  2. Obtiene pronóstico de Open-Meteo para la ubicación configurada (7 días)
   3. Evalúa reglas de alerta para cada cultivo monitoreado
   4. Genera gráficos agroclimáticos con Matplotlib
   5. Solicita análisis agronómico a Groq (Llama 3.3-70b, gratis)

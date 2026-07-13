@@ -12,14 +12,12 @@ class Location(TypedDict):
 
 
 LOCATION: Location = {
-    "name": os.getenv("LOCATION_NAME", "Chimbarongo, Colchagua"),
-    "latitude": float(os.getenv("LOCATION_LATITUDE", "-34.7125")),
-    "longitude": float(os.getenv("LOCATION_LONGITUDE", "-71.0434")),
+    "name": os.getenv("LOCATION_NAME", "Santiago"),
+    "latitude": float(os.getenv("LOCATION_LATITUDE", "-33.4489")),
+    "longitude": float(os.getenv("LOCATION_LONGITUDE", "-70.6693")),
     "timezone": os.getenv("LOCATION_TIMEZONE", "America/Santiago"),
-    "altitude_m": int(os.getenv("LOCATION_ALTITUDE_M", "305")),
-    "region": os.getenv(
-        "LOCATION_REGION", "Región del Libertador General Bernardo O'Higgins"
-    ),
+    "altitude_m": int(os.getenv("LOCATION_ALTITUDE_M", "570")),
+    "region": os.getenv("LOCATION_REGION", "Región Metropolitana de Santiago"),
 }
 
 MONITORED_CROPS = ["viña", "cerezos", "maíz", "trigo", "porotos"]

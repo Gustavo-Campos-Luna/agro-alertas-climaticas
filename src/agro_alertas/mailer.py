@@ -329,7 +329,7 @@ def build_html(forecast: dict, alerts: list, ai_text: str, chart_b64: str) -> st
     <div style="font-family:'IBM Plex Mono',Courier,monospace;font-size:9px;
                 letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.55);
                 margin-bottom:14px;">
-      Chimbarongo · Colchagua · {today_str}
+      {LOCATION['name']} · {today_str}
     </div>
 
     <h1 style="font-family:'Playfair Display',Georgia,serif;font-size:34px;

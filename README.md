@@ -6,7 +6,7 @@
 
 Sistema en Python que genera un reporte agroclimático semanal para un predio agrícola y lo envía por correo. Obtiene el pronóstico desde Open-Meteo, evalúa reglas de alerta por cultivo (heladas, enfermedades fúngicas, estrés hídrico, viento), genera gráficos y agrega un análisis agronómico con IA (Groq / Llama 3.3).
 
-Configurado por defecto para Chimbarongo, Colchagua (Chile), pero la ubicación y los cultivos monitoreados son configurables.
+Configurado por defecto para Santiago (Chile), pero la ubicación y los cultivos monitoreados son configurables.
 
 ## Estructura
 
@@ -44,7 +44,7 @@ EMAIL_RECIPIENTS=    # separados por coma
 GROQ_API_KEY=        # opcional: sin ella se usa un análisis de respaldo sin IA
 ```
 
-Opcionalmente, sobreescribe la ubicación del predio (por defecto Chimbarongo, Colchagua):
+Opcionalmente, sobreescribe la ubicación del predio (por defecto Santiago):
 
 ```env
 LOCATION_NAME=

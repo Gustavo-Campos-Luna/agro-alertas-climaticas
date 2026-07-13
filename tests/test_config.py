@@ -17,8 +17,8 @@ def test_location_defaults_when_no_env(monkeypatch):
 
     importlib.reload(config)
 
-    assert config.LOCATION["name"] == "Chimbarongo, Colchagua"
-    assert config.LOCATION["latitude"] == -34.7125
+    assert config.LOCATION["name"] == "Santiago"
+    assert config.LOCATION["latitude"] == -33.4489
     assert config.LOCATION["timezone"] == "America/Santiago"
 
 
