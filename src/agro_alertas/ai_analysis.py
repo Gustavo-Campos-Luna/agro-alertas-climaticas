@@ -49,7 +49,7 @@ def generate_analysis(forecast: dict, alerts: list[Alert]) -> str:
     alerts_summary = build_alerts_summary(alerts)
     crops_list = ", ".join(CROP_INFO[c]["label"] for c in MONITORED_CROPS)
 
-    prompt = f"""Eres un ingeniero agrónomo experto en la zona de la Región Metropolitana, Chile.
+    prompt = f"""Eres un ingeniero agrónomo experto en la zona de {LOCATION['region']}, Chile.
 Analiza el pronóstico climático y las alertas detectadas para los cultivos del predio ubicado en {LOCATION['name']}.
 
 CULTIVOS MONITOREADOS: {crops_list}
@@ -64,7 +64,7 @@ INSTRUCCIONES:
 1. Escribe un análisis agronómico conciso y práctico en español.
 2. Prioriza las alertas más críticas primero.
 3. Da recomendaciones concretas y accionables para cada problema detectado.
-4. Menciona el contexto de la zona (zona mediterránea semiárida).
+4. Menciona el contexto de la zona ({LOCATION['region']}).
 5. Si hay condiciones favorables, menciónalas brevemente.
 6. Máximo 350 palabras. Tono profesional pero directo.
 7. Organiza por cultivo o por tema según lo más útil.

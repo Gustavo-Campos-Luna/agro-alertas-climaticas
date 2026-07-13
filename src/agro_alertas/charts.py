@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import rcParams
 
+from agro_alertas.config import LOCATION
 from agro_alertas.rules import format_date_es
 
 # ─── Paleta editorial (espeja tokens del email) ─────────────────────────────
@@ -368,7 +369,7 @@ def generate_charts(forecast: dict) -> str:
 
     fig.text(
         0.5, 0.97,
-        "Pronóstico Agroclimático — Santiago",
+        f"Pronóstico Agroclimático — {LOCATION['name']}",
         ha="center", fontsize=11.5, fontweight="bold",
         color=P["ink"], fontfamily="serif",
     )
