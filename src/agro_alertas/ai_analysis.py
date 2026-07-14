@@ -1,8 +1,10 @@
 import os
+
 from groq import Groq
-from agro_alertas.rules import Alert, format_date_es
+
 from agro_alertas.config import LOCATION, MONITORED_CROPS
 from agro_alertas.crops_db import CROP_INFO
+from agro_alertas.rules import Alert, format_date_es
 
 
 def build_weather_summary(forecast: dict) -> str:
@@ -47,7 +49,7 @@ def generate_analysis(forecast: dict, alerts: list[Alert]) -> str:
     alerts_summary = build_alerts_summary(alerts)
     crops_list = ", ".join(CROP_INFO[c]["label"] for c in MONITORED_CROPS)
 
-    prompt = f"""Eres un ingeniero agrónomo experto en la zona de la Región Metropolitana, Chile.
+    prompt = f"""Eres un ingeniero agrónomo experto en la zona de {LOCATION['region']}, Chile.
 Analiza el pronóstico climático y las alertas detectadas para los cultivos del predio ubicado en {LOCATION['name']}.
 
 CULTIVOS MONITOREADOS: {crops_list}
@@ -62,7 +64,7 @@ INSTRUCCIONES:
 1. Escribe un análisis agronómico conciso y práctico en español.
 2. Prioriza las alertas más críticas primero.
 3. Da recomendaciones concretas y accionables para cada problema detectado.
-4. Menciona el contexto de la zona (zona mediterránea semiárida).
+4. Menciona el contexto de la zona ({LOCATION['region']}).
 5. Si hay condiciones favorables, menciónalas brevemente.
 6. Máximo 350 palabras. Tono profesional pero directo.
 7. Organiza por cultivo o por tema según lo más útil.
@@ -77,7 +79,7 @@ INSTRUCCIONES:
             temperature=0.4,
             max_tokens=600,
         )
-        return response.choices[0].message.content.strip()
+        return (response.choices[0].message.content or "").strip()
     except Exception:
         try:
             response = client.chat.completions.create(
@@ -86,8 +88,8 @@ INSTRUCCIONES:
                 temperature=0.4,
                 max_tokens=600,
             )
-            return response.choices[0].message.content.strip()
-        except Exception as e:
+            return (response.choices[0].message.content or "").strip()
+        except Exception:
             return _fallback_analysis(alerts)
 
 

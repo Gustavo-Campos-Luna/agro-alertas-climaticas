@@ -1,12 +1,14 @@
-import requests
-from datetime import datetime, date
+from typing import Any
+
 import numpy as np
-from agro_alertas.config import LOCATION, FORECAST_DAYS
+import requests
+
+from agro_alertas.config import FORECAST_DAYS, LOCATION
 
 
 def fetch_forecast() -> dict:
     url = "https://api.open-meteo.com/v1/forecast"
-    params = {
+    params: dict[str, Any] = {
         "latitude": LOCATION["latitude"],
         "longitude": LOCATION["longitude"],
         "timezone": LOCATION["timezone"],
@@ -99,10 +101,10 @@ def format_wind_direction(degrees: float) -> str:
     return dirs[idx]
 
 
-def water_balance(forecast: dict) -> list[float]:
+def water_balance(forecast: dict) -> list[float | None]:
     return [
         (et - p) if et is not None and p is not None else None
-        for et, p in zip(forecast["et0"], forecast["precipitation"])
+        for et, p in zip(forecast["et0"], forecast["precipitation"], strict=True)
     ]
 
 

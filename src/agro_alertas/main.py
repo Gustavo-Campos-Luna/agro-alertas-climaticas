@@ -3,7 +3,7 @@ main.py — Orquestador principal del Sistema Agro Alertas Climáticas.
 
 Flujo de ejecución:
   1. Carga variables de entorno (.env)
-  2. Obtiene pronóstico de Open-Meteo para Santiago (7 días)
+  2. Obtiene pronóstico de Open-Meteo para la ubicación configurada (7 días)
   3. Evalúa reglas de alerta para cada cultivo monitoreado
   4. Genera gráficos agroclimáticos con Matplotlib
   5. Solicita análisis agronómico a Groq (Llama 3.3-70b, gratis)
@@ -16,28 +16,26 @@ Uso:
 """
 
 import sys
-import os
-import traceback
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
 # UTF-8 en consola Windows
 if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
-    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[union-attr]
 
 # Carga las variables de entorno desde .env antes de cualquier import que las use
 from dotenv import load_dotenv
+
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 load_dotenv(PROJECT_ROOT / ".env")
 
-from agro_alertas.weather import fetch_forecast
-from agro_alertas.rules import evaluate, alerts_by_crop, overall_severity, format_date_es
-from agro_alertas.charts import generate_charts
 from agro_alertas.ai_analysis import generate_analysis
-from agro_alertas.mailer import send_email, build_html
+from agro_alertas.charts import generate_charts
 from agro_alertas.config import LOCATION, MONITORED_CROPS
 from agro_alertas.crops_db import CROP_INFO
-
+from agro_alertas.mailer import build_html, send_email
+from agro_alertas.rules import alerts_by_crop, evaluate, format_date_es, overall_severity
+from agro_alertas.weather import fetch_forecast
 
 # ─── Utilidades de consola ──────────────────────────────────────────────────
 

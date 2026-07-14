@@ -18,12 +18,13 @@ import os
 import re
 import smtplib
 import ssl
+from datetime import date
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from datetime import date
-from agro_alertas.rules import Alert, format_date_es, overall_severity, alerts_by_crop
+
 from agro_alertas.config import LOCATION, MONITORED_CROPS
 from agro_alertas.crops_db import CROP_INFO
+from agro_alertas.rules import alerts_by_crop, format_date_es, overall_severity
 
 
 def _md_to_html(text: str) -> str:
@@ -283,11 +284,9 @@ def build_html(forecast: dict, alerts: list, ai_text: str, chart_b64: str) -> st
     by_crop    = alerts_by_crop(alerts)
     n_total    = len(alerts)
     n_critical = sum(1 for a in alerts if a.severity == "crítica")
-    n_high     = sum(1 for a in alerts if a.severity == "alta")
 
     temp_vals = [t for t in forecast["temp_min"] if t is not None]
     temp_min_str = f"{min(temp_vals):.1f}°C" if temp_vals else "—"
-    temp_max_str = f"{max(t for t in forecast['temp_max'] if t is not None):.1f}°C" if forecast["temp_max"] else "—"
     rain_total = sum(p for p in forecast["precipitation"] if p is not None)
 
     crops_html = "".join(
@@ -330,7 +329,7 @@ def build_html(forecast: dict, alerts: list, ai_text: str, chart_b64: str) -> st
     <div style="font-family:'IBM Plex Mono',Courier,monospace;font-size:9px;
                 letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.55);
                 margin-bottom:14px;">
-      Santiago · zona vitivinícola central · {today_str}
+      {LOCATION['name']} · {today_str}
     </div>
 
     <h1 style="font-family:'Playfair Display',Georgia,serif;font-size:34px;
@@ -438,13 +437,12 @@ def send_email(forecast: dict, alerts: list, ai_text: str, chart_b64: str) -> No
     password   = os.getenv("EMAIL_PASSWORD")
     recipients = [r.strip() for r in os.getenv("EMAIL_RECIPIENTS", "").split(",") if r.strip()]
 
-    if not all([sender, password, recipients]):
+    if not sender or not password or not recipients:
         raise ValueError(
             "Faltan variables en .env: EMAIL_SENDER, EMAIL_PASSWORD, EMAIL_RECIPIENTS.\n"
             "Nota: usa Gmail App Password (no tu contraseña de cuenta)."
         )
 
-    severity   = overall_severity(alerts)
     n_critical = sum(1 for a in alerts if a.severity == "crítica")
     n_total    = len(alerts)
 
