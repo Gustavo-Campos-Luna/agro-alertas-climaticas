@@ -19,6 +19,8 @@ Umbrales verificados contra fuentes chilenas y latam oficiales (revisión 2025):
 from datetime import date
 from typing import TypedDict
 
+_ALL_MONTHS = list(range(1, 13))
+
 
 class CropInfo(TypedDict):
     label: str
@@ -26,6 +28,7 @@ class CropInfo(TypedDict):
     description: str
     harvest_months: list[int]
     flowering_months: list[int]
+    active_months: list[int]
 
 
 CROP_INFO: dict[str, CropInfo] = {
@@ -35,6 +38,9 @@ CROP_INFO: dict[str, CropInfo] = {
         "description": "Vitis vinifera — zona vitivinícola de clima mediterráneo",
         "harvest_months": [3, 4],
         "flowering_months": [10, 11],
+        # Perenne: la planta existe todo el año (dormancia en invierno,
+        # pero heladas siguen dañando yemas y madera).
+        "active_months": _ALL_MONTHS,
     },
     "cerezos": {
         "label": "Cerezos",
@@ -42,6 +48,8 @@ CROP_INFO: dict[str, CropInfo] = {
         "description": "Prunus avium — Muy sensible a lluvia en cosecha y heladas tardías",
         "harvest_months": [12, 1],
         "flowering_months": [9, 10],
+        # Perenne: igual que viña.
+        "active_months": _ALL_MONTHS,
     },
     "maíz": {
         "label": "Maíz",
@@ -49,6 +57,8 @@ CROP_INFO: dict[str, CropInfo] = {
         "description": "Zea mays — Sensible a heladas y calor extremo en floración",
         "harvest_months": [3, 4],
         "flowering_months": [12, 1],
+        # Anual: siembra oct-nov, cosecha mar-abr (zona centro de Chile).
+        "active_months": [10, 11, 12, 1, 2, 3, 4],
     },
     "trigo": {
         "label": "Trigo",
@@ -56,6 +66,8 @@ CROP_INFO: dict[str, CropInfo] = {
         "description": "Triticum aestivum — Principal cereal de la zona centro-sur de Chile",
         "harvest_months": [12, 1],
         "flowering_months": [10, 11],
+        # Anual de invierno: siembra abr-jun, cosecha dic-ene.
+        "active_months": [4, 5, 6, 7, 8, 9, 10, 11, 12, 1],
     },
     "porotos": {
         "label": "Porotos",
@@ -63,12 +75,19 @@ CROP_INFO: dict[str, CropInfo] = {
         "description": "Phaseolus vulgaris — Leguminosa muy sensible a heladas y anegamiento",
         "harvest_months": [2, 3],
         "flowering_months": [12, 1],
+        # Anual: siembra oct-nov, cosecha feb-mar.
+        "active_months": [10, 11, 12, 1, 2, 3],
     },
 }
 
 
 def get_alert_rules(crop: str, forecast_date: date) -> list[dict]:
     month = forecast_date.month
+
+    if crop not in CROP_INFO or month not in CROP_INFO[crop]["active_months"]:
+        # Fuera de temporada: el cultivo no está en el suelo, no hay
+        # planta que las reglas (heladas, hongos, plagas) puedan afectar.
+        return []
 
     rules = {
 
