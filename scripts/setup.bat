@@ -4,7 +4,7 @@ color 0A
 echo.
 echo ============================================================
 echo   Sistema Agro Alertas Climaticas - Instalacion
-echo   Santiago, O'Higgins
+echo   Santiago, Chile
 echo ============================================================
 echo.
 
